@@ -14,61 +14,51 @@
     
     <script type="text/processing">
     
-      Ball[] ball;
+     mport peasy.PeasyCam;
 
-      void setup(){
-        size(700, 600);
-        frameRate(100);
-        ball = new Ball[100];
-        for(int i = 0; i < ball.length; i++){
-            ball[i] = new Ball();
+PVector[] features;
+float angle = 0;
+PeasyCam cam;
+
+void setup() {
+  size(800, 800, P3D);
+  cam = new PeasyCam(this, 1600);
+  features = new PVector[50];
+  for (int i = 0; i < features.length; i++) {
+    features[i] = new PVector(
+      random(-width/2, width/2), 
+      random(-width/2, width/2), 
+      random(-width/2, width/2));
+  }
+}
+
+void draw() {
+  background(#FF0000);
+  //loadPixels();
+  //float z = sin(angle) * (width/2);
+  int skip = 50;
+  for (int x = -width/2; x < width/2; x+=skip) {
+    for (int y = -width/2; y < width/2; y+=skip) {
+      for (int z = -width/2; z < width/2; z+=skip) {
+        float[] distances = new float[features.length];
+        for (int i = 0; i < features.length; i++) {
+          PVector v = features[i];
+          distances[i] = dist(x, y, z, v.x, v.y, v.z);
         }
+        distances = sort(distances);
+        int n = 1;
+        float d = distances[n];
+        float sz = map(d, 0, width/8, skip, 0);
+        push();
+        translate(x, y, z);
+        noStroke();
+        fill(255, 60);
+        box(sz);
+        pop();
       }
-
-
-
-      void draw(){
-          background(155,0,0);
-            for(int i = 0; i < ball.length; i++){
-                ball[i].display();
-            }
-
-      }
-      class Ball{
-
-          float x;
-          float y;
-          float Vx;
-          float Vy;
-          float r,g,b,o;
-          float d;
-
-          Ball(){
-              x = random(width);
-              y = random(height);
-              Vx = random(-5,5);
-              Vy = random(-5,5);
-              r = random(255);
-              g = random(255);
-              b = random(255);
-              o = random(255);
-              d = random(30) + 15;
-          }
-
-          void display(){
-              fill(r,g,b,o);
-              ellipse(x,y,d,d);
-              x += Vx;
-              y += Vy;
-              if(x > width || x < 0){
-                  Vx *= -1;
-              }
-              if(y > height || y < 0){
-                  Vy *= -1;
-              }
-          }
     }
-
+    //rec() ;
+  }
 
     </script>
     <canvas id="sketch" style="border: 1px solid black;"></canvas>

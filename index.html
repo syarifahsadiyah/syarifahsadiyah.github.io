@@ -12,75 +12,73 @@
     
     <script type="text/processing">
     
-    //I made this as a way to play with typography in a new way. It´s a bit challenging to draw with this,
-//but that´s also why it is fun, and why you end up with new unexpected results which can give you new ideas. 
-
-
-import processing.pdf.*;
-
-float[] x = new float[250]; //says x is a float, how many segments, needs to be the same value as y
-float[] y = new float[250]; //says y is a float, how many segments, needs to be the same value as x
-float segLength = 3; //length of the segments, not the amount
-int dim;
-
-boolean record;
+final int nb = 55;
+final int step = 8;
+final float DIST = 50;
+final float DISTORTION = 15;
+Part[][] parts = new Part[nb][nb];
+Boolean mode = true;
 
 void setup() {
-  size(800, 800); 
-  record = false; //so it doesn´t record until you press space
+  size(500, 500, P2D);
+  int dx = (width-nb*step)/2;
+  for (int i = 0; i < nb; i ++) {
+    for (int j = 0; j < nb; j ++) {
+      parts[i][j] = new Part(i*step+dx, j*step+dx);
+    }
+  }
 }
 
 void draw() {
-  //if you press space it records one frame
-  if (record) 
-  {
-    beginRecord(PDF, "snake-####.pdf");
-  }
-  background(255, 220, 220); //light pink
-  strokeWeight(5); //thickness of line
-  stroke(0); //dark blue
-
-  dragSegment(0, mouseX, mouseY); //the segment follows the mouse
-
-
-  //makes sure the snakey thing follows the mouse but has a set length
-  //length-1 decides how short the line is, the higher the number, the sooner it stops drawing it
-
-  for (int i=0; i<x.length- 1; i++) { 
-    dragSegment(i+ 1, x[i], y[i]);
-  }
-
-  if (record)
-  {
-    record = false;
-    endRecord();
+  background(255);
+  PVector m = new PVector(mouseX, mouseY); 
+  for (int i = 0; i < nb; i ++) {
+    for (int j = 0; j < nb; j ++) {
+      parts[i][j].update(m);
+    }
   }
 }
 
-void dragSegment(int i, float xin, float yin) {
-  float dx = xin - x[i];
-  float dy = yin - y[i];
-  float angle = atan2(dy, dx);  //calculates the angle
-  x[i] = xin - cos(angle) * segLength; //the angle between the segments
-  y[i] = yin - sin(angle) * segLength;
-  segment(x[i], y[i], angle);
+class Part {
+  PVector pos, speed, origin;
+  Part(int x, int y) {
+    pos = new PVector(x, y);
+    origin = pos.get();
+    speed = new PVector(0, 0);
+  }
+  void update(PVector m) {
+    PVector tmp = origin.get();
+    tmp.sub(m);
+    float d = tmp.mag();
+    float c = map(d, 0, DIST, 0, PI);
+    tmp.normalize();
+    if (mode) {
+      tmp.mult(DISTORTION*sin(c));
+    }
+    if (d < DIST) {
+      strokeWeight(1+10*abs(cos(c/2)));
+      if (!mode) {
+        tmp.mult(DISTORTION*sin(c));
+      }
+    } else {
+      strokeWeight(map(min(d, width), 0, width, 5, .1));
+    }
+
+    PVector target = new PVector(origin.x+tmp.x, origin.y+tmp.y);
+    tmp = pos.get();
+    tmp.sub(target);
+    tmp.mult(-map(m.dist(pos), 0, 2*width, .1, .01));
+    speed.add(tmp);
+    speed.mult(.87);
+    pos.add(speed);
+
+    point(pos.x, pos.y);
+  }
 }
 
-void segment(float x, float y, float a) { 
-  pushMatrix(); //takes it out into another dimension, turns it around, and puts it back in with popmatrix
-  translate(x, y);
-  rotate(a);
-  line(0, 0, segLength, 0);
-  popMatrix();
+void mousePressed() {
+  mode = !mode;
 }
-
-void keyPressed() {
-  record = true; //makes everything defined further up happen
-}
-
-//A segmented line follows the mouse. The relative angle from each segment to the next 
-//is calculated with atan2() and the position of the next is calculated with sin() and 
-//cos().
 
     </script>
     <canvas id="sketch" style="border: 1px solid black;"></canvas>

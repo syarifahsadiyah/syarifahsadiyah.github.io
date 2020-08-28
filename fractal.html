@@ -5,7 +5,7 @@
 
   <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-      <title>fractalo</title>
+      <title>fractal</title>
       <script type="text/javascript" src="js/processing.js"></script>
   </head>
   
@@ -37,7 +37,6 @@ void draw()
   levels = round( ( xb / 500 ) * 8 );
   scaleRange = mouseY * 10 / ( 8 * 5 );
   scaleRange = scaleRange / 1000;
-  // println(xb + ":" + levels + " " + yb + ":" + scaleRange);
   if ((old_levels != levels) || (old_scaleRange != scaleRange))
   {
     background(255);
@@ -49,9 +48,6 @@ void draw()
     oldB[1][0] = new Cell(700, 100);
     oldB[1][1] = new Cell(700, 700);
 
-    //  println (oldB[1][1].x + " " + oldB[1][1].y);
-
-    // calculate result  
     while (level<levels)
     {
       n=2*n-1;
@@ -72,9 +68,6 @@ void draw()
             float rng = d*scaleRange;
             float xu = random(-rng, rng);
             float yu = random(-rng, rng);
-            //            print("p[" + ii + "][" + jj + "]=(" + oldB[ii][jj].x + "," + oldB[ii][jj].y + ") p[");
-            //            println(ii + "][" + (jj+1) + "]=(" + oldB[ii][jj+1].x + "," + oldB[ii][jj+1].y + ")");
-            //            println(x + " " + y + " " + d + " " + rng + " " + xu + " " + yu);
             newB[i][j] = new Cell(x+xu, y+yu);
           } 
           else if (((i%2) == 1) && ((j%2) == 0)) {
@@ -105,9 +98,6 @@ void draw()
       oldB = newB;
       // println(level);
     }
-
-    // draw result
-    // println("draw init");
     for (int i=0; i<n; i++) {
       for (int j=0; j<n; j++) {
         if ((i<n-1) && (j<n-1)) {
@@ -124,16 +114,14 @@ void draw()
     }
     old_levels = levels;
     old_scaleRange = scaleRange;
-    // println("call");
   }
 }
 
 
 class Cell {
-  // A cell object knows about its location in the grid as well as its size with the variables x,y,w,h.
+ 
   float x, y;   // x,y location
 
-  // Cell Constructor
   Cell(float tempX, float tempY) {
     x = tempX;
     y = tempY;

@@ -1,0 +1,48 @@
+
+<!Doctype: HTML w/ Processing>
+
+<html>
+
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <title>H Y P E (NO)</title>
+      <script type="text/javascript" src="js/processing.js"></script>
+  </head>
+  
+  <body>
+    
+    <script type="text/processing">
+
+void setup() {
+  size(500, 500); 
+  ellipseMode(RADIUS);
+  strokeWeight(1);
+  stroke(0);
+}
+
+void draw() {
+  background(0);
+  drawCircle(width/2, height/2, 200, frameCount*.03, -16777216);
+}
+
+void drawCircle(float centx, float centy, float radius, float ang, color c) {
+  if (c == -16777216) c = color(255);
+  else if (c == -1) c = color(0);
+  fill(c);
+  ellipse(centx, centy, radius, radius);
+  radius -= 5;
+  float dx = centx + sin(ang) * 5;
+  float dy = centy + cos(ang) * 5;
+  float a = map(mouseX, 1, width, .15, .19);
+  ang +=  .161;
+  if (radius > 0) {
+    drawCircle(dx, dy, radius, ang, c);
+  }
+}
+
+    </script>
+    <canvas id="sketch" style="border: 1px solid black;"></canvas>
+    
+  </body>
+  
+</html>

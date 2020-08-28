@@ -1,0 +1,50 @@
+
+<!Doctype: HTML w/ Processing>
+
+<html>
+
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <title>Processing Demo</title>
+      <script type="text/javascript" src="js/processing.js"></script>
+  </head>
+  
+  <body>
+    <h1>PUT YOUR TITLE HERE</h1>
+    <p>ADD DESCRIPTION HERE</p>
+    
+    <script type="text/processing">
+    
+     float pSize = 5;
+int iter = 1;
+Karman karman;
+
+void setup(){
+  size(800, 800);
+  //fullScreen();
+  colorMode(RGB, 360, 100, 100);
+  karman = new Karman();
+  karman.boundaryConditionP();
+  karman.boundaryConditionUV();
+  noStroke();
+  background(360);
+}
+
+void draw(){
+  for(int i = 0; i < iter; i++){
+    karman.poissonEquation();
+    karman.project();//don't have to
+    karman.velocityEquation();
+    karman.boundaryConditionUV();
+    karman.project();//don't have to
+  }
+  karman.show();
+  //rec();
+}
+
+    </script>
+    <canvas id="sketch" style="border: 1px solid black;"></canvas>
+    
+  </body>
+  
+</html>

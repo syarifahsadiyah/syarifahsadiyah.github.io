@@ -1,0 +1,61 @@
+<!Doctype: HTML w/ Processing>
+
+<html>
+
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <title>B L O W  L I N E</title>
+      <script type="text/javascript" src="js/processing.js"></script>
+  </head>
+  
+  <body>
+    
+    <script type="text/processing">
+    
+     void setup() {
+  size(500,500);
+  smooth();
+  noStroke();
+  noiseDetail(4);
+}
+
+float a = 0;
+float s = TWO_PI/120;
+
+void draw() {
+  doLines();
+  a+=s;
+}
+
+void doLines() {
+  background(255);
+   for(int j=50;j<450;j+=25) {
+     for(int i=50;i<450;i++) {
+      if(j!=50 && j!=440) { //grid
+      float step = sin(a)*(sin((450-i)*PI/400.0));
+       float swing = j+step*(180.0*noise(a+i/300.0, a+j/300.0,a/10.0)-90.0);
+       float dx = randomC()/2;
+       float dy = randomC()/2;
+       float x = i+dx;
+       float y = swing+dy;
+       fill(20,150-150*sqrt(sq(dx)+sq(dy))); // pencil effect
+       ellipse(x,y,2,2);
+    }
+  }
+ }
+
+}
+
+//pseudo
+float randomC() {
+  float r = random(0,1);
+  float ang = sin(TWO_PI*random(0,1));
+  return r*ang;
+}
+
+    </script>
+    <canvas id="sketch" style="border: 1px solid black;"></canvas>
+    
+  </body>
+  
+</html>

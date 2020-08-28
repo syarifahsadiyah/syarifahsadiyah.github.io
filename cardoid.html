@@ -12,43 +12,32 @@
     
     <script type="text/processing">
     
-     float r;
-float factor = 0;
-
-void setup() {
-  size(600, 600);
-  //fullScreen();
-  r = height/2 - 16;  
-}
-
-PVector getVector(float index, float total) {
-  float angle = map(index % total, 0, total, 0, TWO_PI);
-  PVector v = PVector.fromAngle(angle + PI);
-  v.mult(r);
-  return v;
-}
-
-void draw() {
-  background(#FF0000);
-  int total = 200;//int(map(mouseX, 0, width, 0, 200));
-  factor += 0.01;
-
-  translate(width/2, height/2);
-  stroke(255, 150);
-  strokeWeight(2);
-  noFill();
-  circle(0, 0, r*2);
+  float radius = 200;
+  float step = 5;
   
+void setup(){
+  size(640, 640);
+  noFill();
   strokeWeight(2);
-  for (int i = 0; i < total; i++) {
-    PVector a = getVector(i, total);
-    PVector b = getVector(i * factor, total);
-    line(a.x, a.y, b.x, b.y);
-    
-  }
- 
 }
 
+void draw(){
+  background(238, 243, 239);
+  translate(width / 2, height / 2);
+
+  for(float y = -radius + step / 2; y <= radius - step / 2; y += step){
+    float wave = abs(pow(sin(y * 0.003 + frameCount * 0.1), 10));
+    float wy = y - map(wave, 0, 1, -step, step);
+    float X = sqrt(sq(radius) - sq(y)) * map(wave, 0, 1, 1, 1.1);
+    float cRate = map(y, -radius + step / 2, radius + step / 2, 0, 1);
+    stroke(lerpColor(color(22, 255, 169), color(234, 84, 93), cRate));
+    beginShape();
+    for(float x = -X; x <= X; x += 1){
+      vertex(x, wy);
+    }
+    endShape();
+  }
+}
     </script>
     <canvas id="sketch" style="border: 1px solid black;"></canvas>
     

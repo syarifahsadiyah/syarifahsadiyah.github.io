@@ -1,0 +1,43 @@
+<!Doctype: HTML w/ Processing>
+
+<html>
+
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <title>EYE PULSE</title>
+      <script type="text/javascript" src="js/processing.js"></script>
+  </head>
+  
+  <body>
+    
+    <script type="text/processing">
+    
+     int num=12, frames = 90;
+float theta;
+
+void setup() {
+  size(500, 500);
+}
+
+
+void draw() {
+  background(20);
+  stroke(240);
+  noFill();
+
+  for (int i=0; i<num; i++) {
+    float sz = i*35;
+    float sw = map(sin(theta+TWO_PI/num*i), -1, 1, 1, 16);
+    strokeWeight(sw);
+    ellipse(width/2, height/2, sz, sz);
+  }
+  theta += TWO_PI/frames;
+  //if (frameCount<=frames) saveFrame("image-###.gif");
+}
+
+    </script>
+    <canvas id="sketch" style="border: 1px solid black;"></canvas>
+    
+  </body>
+  
+</html>

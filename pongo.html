@@ -1,0 +1,70 @@
+
+<!Doctype: HTML w/ Processing>
+
+<html>
+
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <title>pongo</title>
+      <script type="text/javascript" src="js/processing.js"></script>
+  </head>
+  
+  <body>
+    
+    <script type="text/processing">
+    
+      float xPos,yPos,xSpeed,ySpeed;
+int score;
+
+void setup() {
+  size(500,500);
+  rectMode(CENTER);
+  xPos = width/2;
+  yPos = height/2;
+  xSpeed = random(-4,-7);
+  ySpeed = random(-5,5);
+  textSize(50);
+  textAlign(CENTER);
+  background(255);
+}
+
+void draw() {
+  fill(255,50); //Fade away background
+  noStroke();
+  rect(width/2,height/2,width,height);
+  
+  fill(100,50); // Text
+  text(score, width/2, height/4);  
+  
+  fill(0); //The Paddle
+  rect(450,mouseY, 20,80);
+  
+  //Collisions
+  if (xPos < 0)    //Left Wall
+    xSpeed *= -1;
+  if (yPos < 0 || yPos > height) //Top and bottom wall
+    ySpeed *= -1;
+  if (xPos >= 435 && xPos <= 465 && yPos >= mouseY - 45 && yPos <= mouseY + 45 && xSpeed >= 0) { //With Paddle
+    score += 25;
+    xSpeed *= -1.1;
+  }
+  if(xPos > width) //Right wall
+    exit();
+  
+  //Collision code without rectMode(CENTER);
+  // if (xPos >= 450 && xPos <= 470 && yPos >= mouseY && yPos <= mouseY + 80 && xSpeed >= 0)
+  //   xSpeed *= -1.1;
+  
+  //Speed increment and draw ball
+  xPos += xSpeed;
+  yPos += ySpeed;
+  ellipse(xPos,yPos,20,20);
+  
+}
+
+    </script>
+    <canvas id="sketch" style="border: 1px solid black;"></canvas>
+    
+  </body>
+  
+</html>

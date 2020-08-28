@@ -29,7 +29,6 @@ float mchange = 0;
 void setup() {
   size(600, 600, P3D);
   cam = new PeasyCam(this, 500);
-  //colorMode(HSB);
   globe = new PVector[total+1][total+1];
 }
 
@@ -58,11 +57,9 @@ void draw() {
   for (int i = 0; i < total+1; i++) {
     float lat = map(i, 0, total, -HALF_PI, HALF_PI);
     float r2 = supershape(lat, m, 0.2, 1.7, 1.7);
-    //float r2 = supershape(lat, 2, 10, 10, 10);
     for (int j = 0; j < total+1; j++) {
       float lon = map(j, 0, total, -PI, PI);
       float r1 = supershape(lon, m, 0.2, 1.7, 1.7);
-      //float r1 = supershape(lon, 8, 60, 100, 30);
       float x = r * r1 * cos(lon) * r2 * cos(lat);
       float y = r * r1 * sin(lon) * r2 * cos(lat);
       float z = r * r2 * sin(lat);
@@ -76,7 +73,6 @@ void draw() {
   offset += 5;
   for (int i = 0; i < total; i++) {
     float hu = map(i, 0, total, 0, 255*6);
-    //fill((hu + offset) % 255 , 255, 255);
     beginShape(TRIANGLE_STRIP);
     for (int j = 0; j < total+1; j++) {
       PVector v1 = globe[i][j];

@@ -29,17 +29,17 @@ void setup() {
 }
 
 void draw() {
-  fill(255,50); //Fade away background
+  fill(255,50); 
   noStroke();
   rect(width/2,height/2,width,height);
   
-  fill(100,50); // Text
+  fill(100,50); 
   text(score, width/2, height/4);  
   
-  fill(0); //The Paddle
+  fill(0); 
   rect(450,mouseY, 20,80);
   
-  //Collisions
+  
   if (xPos < 0)    //Left Wall
     xSpeed *= -1;
   if (yPos < 0 || yPos > height) //Top and bottom wall
@@ -51,11 +51,7 @@ void draw() {
   if(xPos > width) //Right wall
     exit();
   
-  //Collision code without rectMode(CENTER);
-  // if (xPos >= 450 && xPos <= 470 && yPos >= mouseY && yPos <= mouseY + 80 && xSpeed >= 0)
-  //   xSpeed *= -1.1;
-  
-  //Speed increment and draw ball
+
   xPos += xSpeed;
   yPos += ySpeed;
   ellipse(xPos,yPos,20,20);

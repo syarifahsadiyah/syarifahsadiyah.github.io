@@ -1,0 +1,69 @@
+
+<!Doctype: HTML w/ Processing>
+
+<html>
+
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <title>CATCH THE CUBE</title>
+      <script type="text/javascript" src="js/processing.js"></script>
+  </head>
+  
+  <body>
+    <h1>PUT YOUR TITLE HERE</h1>
+    <p>ADD DESCRIPTION HERE</p>
+    
+    <script type="text/processing">
+    
+     float rotation, zPos, zSpeed;
+int score = 0;
+
+
+void setup() {
+  size(500, 500, P3D);
+  zPos = -50;
+  zSpeed = -5;
+}
+
+void draw() {
+  background(0);
+  textAlign(CENTER);
+  textSize(30);
+  fill(255);
+  text("score: " + score, width / 2, 30);
+  translate(mouseX, mouseY, zPos);
+  rotateY(rotation);
+  
+  
+  if (zPos > 0) {
+    fill(255, 0, 0);
+  } else {
+    fill(255);
+  }
+  
+  box(50);
+  rotation += 0.02;
+  zPos += zSpeed;
+  
+  if (zPos < -400 || zPos > 50) {
+    zSpeed *= -1;
+  }
+  
+  
+  
+}
+
+void mousePressed () {
+  if (zPos > 0) {
+    score += 1;
+  } else {
+    score -= 1;
+  }
+}
+
+    </script>
+    <canvas id="sketch" style="border: 1px solid black;"></canvas>
+    
+  </body>
+  
+</html>

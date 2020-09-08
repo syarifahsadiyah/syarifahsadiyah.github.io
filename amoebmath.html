@@ -13,79 +13,143 @@
     
     <script type="text/processing">
     
-      import peasy.*;
+     float t;
+float vLines=65;
+float vSpace=1;
+int vShape=10;
+float vSpeed=.2;
+color vColor = 255;
+color vBackground = 0;
+int w = 5;
+int vRadBig = 260;
+int vRadSmall = 60;
 
-PeasyCam cam;
+final int stateStartMenu = 0;
+final int stateRunProgram = 1;
+int state = stateStartMenu;
 
-PVector[][] globe;
-int total = 75;
+void setup(){size(800, 800); background(0, 10, 20);}
 
-float offset = 0;
-
-float m = 0;
-float mchange = 0;
-
-
-void setup() {
-  size(600, 600, P3D);
-  cam = new PeasyCam(this, 500);
-  //colorMode(HSB);
-  globe = new PVector[total+1][total+1];
+void draw(){  
+  if (state == stateStartMenu) {
+    translate(width/2, height/2); //center in comp
+    textAlign(CENTER, BOTTOM);
+    textSize(48);
+    text("LINES IN ORBIT", 0, -90);
+    textSize(24);
+    text("NUMBER KEYS (0-9) change Color", 0, -0);
+    text("ARROW KEYS change Speed and Shape", 0, 30);
+    text("SHIFT resets Speed", 0, 60);
+    text("CONTROL resets Shape", 0, 90);
+    text("CLICK to Start", 0, 180);
+    noLoop();
+  }
+  else {
+    noFill();
+    strokeWeight(w);
+    translate(width/2, height/2);
+    background(vBackground);
+    for(int i=0; i<vLines; i+=vSpace){ //number of lines
+      line(x1(t-i), y1(t-i), x2(t-i), y2(t-i)); //draw lines
+      line(-x1(-t-i), -y1(-t-i), -x3(-t-i), -y3(-t-i)); //draw lines reversed
+      stroke(vColor, 255-4*i); //fade opacity
+    }
+    t-=vSpeed;  //rotate speed
+  }
 }
 
-float a = 1;
-float b = 1;
-
-float supershape(float theta, float m, float n1, float n2, float n3) {
-  float t1 = abs((1/a)*cos(m * theta / 4));
-  t1 = pow(t1, n2);
-  float t2 = abs((1/b)*sin(m * theta/4));
-  t2 = pow(t2, n3);
-  float t3 = t1 + t2;
-  float r = pow(t3, - 1 / n1);
-  return r;
+float x1(float t){  //outer point x
+  return sin(t/10)*(mouseX/8 + vRadBig);
 }
 
-void draw() {
-  
-  m = map(sin(mchange), -1, 1, 0, 7);
-  mchange += 0.02;
-  
-  background(0);
-  noStroke();
-  lights();
-  float r = 200;
-  for (int i = 0; i < total+1; i++) {
-    float lat = map(i, 0, total, -HALF_PI, HALF_PI);
-    float r2 = supershape(lat, m, 0.2, 1.7, 1.7);
-    //float r2 = supershape(lat, 2, 10, 10, 10);
-    for (int j = 0; j < total+1; j++) {
-      float lon = map(j, 0, total, -PI, PI);
-      float r1 = supershape(lon, m, 0.2, 1.7, 1.7);
-      //float r1 = supershape(lon, 8, 60, 100, 30);
-      float x = r * r1 * cos(lon) * r2 * cos(lat);
-      float y = r * r1 * sin(lon) * r2 * cos(lat);
-      float z = r * r2 * sin(lat);
-      globe[i][j] = new PVector(x, y, z);
-    }
-  }
+float y1(float t){  //outer point y
+  return cos(t/vShape)*(mouseX/8 + vRadBig);
+}
 
-  stroke(255);
-  fill(255);
-  noFill();
-  offset += 5;
-  for (int i = 0; i < total; i++) {
-    float hu = map(i, 0, total, 0, 255*6);
-    //fill((hu + offset) % 255 , 255, 255);
-    beginShape(TRIANGLE_STRIP);
-    for (int j = 0; j < total+1; j++) {
-      PVector v1 = globe[i][j];
-      vertex(v1.x, v1.y, v1.z);
-      PVector v2 = globe[i+1][j];
-      vertex(v2.x, v2.y, v2.z);
-    }
-    endShape();
+float x2(float t){  //inner point x
+  return sin(t/vShape+5)*(mouseY/8 +vRadSmall);
+}
+
+float y2(float t){  //inner point y
+  return cos(t/vShape+5)*(mouseY/8 +vRadSmall);
+}
+
+float x3(float t){  //reversed inner point x
+  return sin(t/vShape-5)*(mouseY/8 +vRadSmall);
+}
+
+float y3(float t){  //reversed inner point y
+  return cos(t/vShape-5)*(mouseY/8 +vRadSmall);
+}
+
+void mousePressed() {
+ if (state == stateStartMenu) {
+   state =stateRunProgram;
+   loop();
+ }
+ if (mouseX>390 && mouseX<410 && mouseY > 390 && mouseY < 410 && state == stateRunProgram) {
+   vBackground = 255;
+   w = 2;
+   vRadBig = 600 -mouseX/8;
+   vRadSmall = 0 - mouseY/8;
+   vColor = color(0, 10, 20);
+ }
+}
+
+/*
+void mouseWheel(MouseEvent event) { //change number of lines
+  int e = event.getCount();
+  vLines+=e*.8;
+  if (vSpace>1){
+    vSpace+=e; // -----BROKEN-----
   }
+  println(vSpace);
+}
+*/
+
+void keyPressed() {
+//-----SPEED-----
+    if (keyCode == UP) { //increase speed
+      vSpeed+=0.1; println(vSpeed);
+    } else if (keyCode == DOWN) { //decrease speed
+      vSpeed-=0.1; println(vSpeed);
+    } else if (keyCode == SHIFT) { //reset speed
+      vSpeed=0; println(vSpeed);
+//-----SHAPE-----
+    } else if (keyCode == LEFT && vShape>-25) { //change shape back
+      vShape--; println(vShape);
+    } else if (keyCode == RIGHT && vShape<25) { //change shape forward
+      vShape++; println(vShape);
+    } else if (keyCode == CONTROL) { //reset shape
+      vShape=10; println(vShape);
+//-----COLOR-----
+    } else if (key == '0') { 
+      vColor = color(255); //white
+    } else if (key == '1') {
+      vColor = color(255, 150, 150); //red
+    } else if (key == '2') {
+      vColor = color(250, 210, 150); //orange
+    } else if (key == '3') {
+      vColor = color(240, 240, 150); //yellow
+    } else if (key == '4') {
+      vColor = color(150, 255, 150); //green
+    } else if (key == '5') {
+      vColor = color(150, 240, 240); //bluegreen
+    } else if (key == '6') {
+      vColor = color(150, 170, 240); //blue
+    } else if (key == '7') {
+      vColor = color(240, 150, 255); //purple
+    } else if (key == '8') {
+      vColor = color(250, 150, 220); //pink
+    } else if (key == '9') {
+      vColor = color(127, 127, 127); //grey
+    } else if (keyCode == DELETE) {
+      w = 5;
+      vRadBig = 260;
+      vRadSmall = 60;
+      vColor = color(255);
+      vBackground = 0;
+    }
 }
 
     </script>

@@ -5,7 +5,27 @@
 
   <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+.container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding-top: 100%; /* 1:1 Aspect Ratio */
+}
+
+.responsive-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+</style>
       <title>CATCH THE CUBE</title>
+    <div class="container"> 
       <script type="text/javascript" src="js/processing.js"></script>
   </head>
   
@@ -55,7 +75,7 @@ void mousePressed () {
     score -= 1;
   }
 }
-
+</div>
     </script>
     <canvas id="sketch" style="border: 1px solid black;"></canvas>
     

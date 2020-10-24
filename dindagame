@@ -46,7 +46,6 @@ int speed = -3;
 
 void setup(){
   size(620,600);
-  //pixelDensity(2);
   HelLetter = createFont("Helvetica",fontSize);
   AriLetter = createFont("Arial",fontSize);  
   title = createFont("Helvetica-Bold", 180);
@@ -134,14 +133,11 @@ void gameStart(){
 
   textFont(AriLetter);
   fill(letterColor);
-  //textAlign(CENTER, TOP);
   text(theLetter, misfitX, misfitY);    
 
   scene = 2; 
 
 }
-
-
 
 void letterArray (char a, float b){
   for(int i = 0; i < 4; i++){
@@ -152,8 +148,6 @@ void letterArray (char a, float b){
     }
   }
 }
-
-
 
 
 void outcome(){
@@ -201,8 +195,6 @@ void outcome(){
   
 }
 
-
-  
 void mouseClicked(){
   
   if(scene == 0){

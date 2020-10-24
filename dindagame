@@ -5,28 +5,15 @@
 
   <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-      <title>pongo</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>B A T I K</title>
       <script type="text/javascript" src="js/processing.js"></script>
-    <style>
-    .responsive {
-	      width: 100%;
-	      height: 0;
-	      padding-bottom: 56.25%;
-	      position: relative;
-    }
-    .responsive iframe{
-	      position: absolute;
-	      width: 100%;
-	      height: 100%;
-    }
-</style>
   </head>
   
   <body>
-    <div class=“responsive”>
-    <script type="text/processing">
     
-     PFont HelLetter, AriLetter, title, paragraph, instruction; 
+    <script type="text/processing">
+PFont HelLetter, AriLetter, title, paragraph, instruction; 
 
 int fontSize = 135; 
 int letterSpacing = 60; 
@@ -242,10 +229,9 @@ void mouseClicked(){
   }
   
 }
-
     </script>
     <canvas id="sketch" style="border: 1px solid black;"></canvas>
-    </div>
+    
   </body>
   
 </html>

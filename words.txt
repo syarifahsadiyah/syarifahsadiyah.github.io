@@ -5,7 +5,6 @@ bathroom
 entertainment
 ruang keluarga
 living room
-serenity
 ruang makan
 dining
 kitchen
@@ -92,5 +91,9 @@ bunk bed
 pagar
 privacy
 terbuka
-skylught
+skylight
 luas
+hemat
+tahan lama
+fungsional
+studio musik

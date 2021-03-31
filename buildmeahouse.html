@@ -13,7 +13,7 @@
     
     <script type="text/processing">
     
-    WordSet ws;
+   WordSet ws;
 
 void setup() {
   size(600, 800);
@@ -22,6 +22,11 @@ void setup() {
 
 void draw() {
   background(#c20114);
+  line(300, 0, 300, 800);
+  textAlign(LEFT);
+  fill(255);
+  text("Your dream house.",375,750); 
+  text("Space/Qualities",100,750);
   ws.draw();
 }
 

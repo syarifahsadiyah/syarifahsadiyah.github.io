@@ -1,0 +1,21 @@
+ <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>sasa</title>
+      <script type="text/javascript" src="js/processing.js"></script>
+  </head>
+
+  <body>
+
+    <script type="text/processing">
+
+   color FG = #FF2A00;
+   color BG = #FFFFFF;
+   PImage img; 
+
+void setup() {
+  size(500, 700); 
+  background(BG);
+  img = loadImage("sasa.jpg");
+  img.resize(700, 900);
+}
